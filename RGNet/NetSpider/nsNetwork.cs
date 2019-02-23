@@ -7,11 +7,11 @@ using System.IO;
 
 namespace RGNet.NetSpider
 {
-    public class NsGet
+    public class NsNetwork
     {
         private  NetSpiderBase nsb = new NetSpiderBase();
         
-        public  void GetStream(NsManager nsm, string url)
+        public  void GetHtml(NsManager nsm, string url)
         {
             HttpWebResponse hwp = nsb.getRequestResponse(url, nsm.Keepalive, nsm.Timeout, nsm.Method, nsm.Accept, nsm.UserAgent);
             nsm.streamh = hwp.GetResponseStream();
@@ -19,10 +19,50 @@ namespace RGNet.NetSpider
         }
         public HttpWebResponse GetResponse(NsManager nsm, string url)
         {
-                HttpWebResponse hwp = nsb.getRequestResponse(url, nsm.Keepalive, nsm.Timeout, nsm.Method, nsm.Accept, nsm.UserAgent);
-                return  hwp;
+            HttpWebResponse hwp = nsb.getRequestResponse(url, nsm.Keepalive, nsm.Timeout, nsm.Method, nsm.Accept, nsm.UserAgent);
+            return  hwp;
+        }
+        public void GetHtmlWithCookie(NsManager nsm,string url)
+        {
+            HttpWebRequest req =(HttpWebRequest)WebRequest.Create(url);
+            req.KeepAlive = nsm.Keepalive;
+            req.Timeout = nsm.Timeout;
+            req.Method = nsm.Method;
+            req.Accept = nsm.Accept;
+            req.UserAgent = nsm.UserAgent;
+            req.CookieContainer = nsm.Cookie;
+            HttpWebResponse res = (HttpWebResponse)req.GetResponse();
+            if (res.StatusCode != HttpStatusCode.OK)
+            {
+                throw new Exception("获取失败");
+            }
+            nsm.streamh = res.GetResponseStream();
+            return;
+        }
+        public void GetHtmlWithCookie(NsManager nsm, string url,string message)
+        {
+            HttpWebRequest req = (HttpWebRequest)WebRequest.Create(url);
+            req.KeepAlive = nsm.Keepalive;
+            req.Timeout = nsm.Timeout;
+            req.Method = nsm.Method;
+            req.Accept = nsm.Accept;
+            req.UserAgent = nsm.UserAgent;
+            req.CookieContainer = nsm.Cookie;
+            using(StreamWriter sw=new StreamWriter(req.GetRequestStream()))
+            {
+                sw.Write(message);
+                sw.Flush();
+            }
+            HttpWebResponse res = (HttpWebResponse)req.GetResponse();
+            if (res.StatusCode != HttpStatusCode.OK)
+            {
+                throw new Exception("获取失败");
+            }
+            nsm.streamh = res.GetResponseStream();
+            return;
         }
     }
+    /*
     class NsPost
     {
         public NsPost()
@@ -51,4 +91,5 @@ namespace RGNet.NetSpider
         }
 
     }
+    */
 }

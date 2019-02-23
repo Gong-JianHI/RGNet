@@ -19,19 +19,7 @@ namespace RGNet.NetSpider
         private int timeout;
         private bool keepalive;
         public Stream streamh;
-        string cookie;
-
-        public string Cookie
-        {
-            get
-            {
-                return cookie;
-            }
-            set
-            {
-                cookie = value;
-            }
-        }
+        CookieContainer cookie;
 
         public bool Keepalive
         {
@@ -91,6 +79,9 @@ namespace RGNet.NetSpider
                 timeout = value;
             }
         }
+
+        public CookieContainer Cookie { get => cookie; set => cookie = value; }
+
         public string getString()
         {
             string temp;

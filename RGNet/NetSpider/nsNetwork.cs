@@ -7,41 +7,20 @@ using System.IO;
 
 namespace RGNet.NetSpider
 {
-    static class NsGet
+    public class NsGet
     {
-        private static NetSpiderBase nsb = new NetSpiderBase();
-        private static bool useCookie = false;
-        public static void getStream(NsManager nsm, string url)
+        private  NetSpiderBase nsb = new NetSpiderBase();
+        
+        public  void GetStream(NsManager nsm, string url)
         {
-            if (useCookie)
-            {
-                HttpWebResponse hwp = nsb.getRequestResponse(url, nsm.Keepalive, nsm.Timeout, nsm.Method, nsm.Accept, nsm.UserAgent);
-                nsm.streamh = hwp.GetResponseStream();
-            }
-            else
-            {
-                HttpWebResponse hwp = nsb.getRequestResponse(url, nsm.Keepalive, nsm.Timeout, nsm.Method, nsm.Accept, nsm.UserAgent);
-                nsm.streamh = hwp.GetResponseStream();
-            }
+            HttpWebResponse hwp = nsb.getRequestResponse(url, nsm.Keepalive, nsm.Timeout, nsm.Method, nsm.Accept, nsm.UserAgent);
+            nsm.streamh = hwp.GetResponseStream();
             return;
         }
-        public static HttpWebResponse getResponse(NsManager nsm, string url)
+        public HttpWebResponse GetResponse(NsManager nsm, string url)
         {
-            if (useCookie)
-            {
                 HttpWebResponse hwp = nsb.getRequestResponse(url, nsm.Keepalive, nsm.Timeout, nsm.Method, nsm.Accept, nsm.UserAgent);
-                return hwp;
-            }
-            else
-            {
-                HttpWebResponse hwp = nsb.getRequestResponse(url, nsm.Keepalive, nsm.Timeout, nsm.Method, nsm.Accept, nsm.UserAgent);
-                return hwp;
-            }
-
-        }
-        public static void setCookie(NsManager nsm)
-        {
-
+                return  hwp;
         }
     }
     class NsPost

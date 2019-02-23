@@ -7,7 +7,7 @@ using System.Text;
 
 namespace RGNet.NetSpider
 {
-    class NsManager
+    public class  NsManager
     {
         public NsManager()
         {

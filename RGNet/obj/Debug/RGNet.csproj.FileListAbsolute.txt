@@ -1,0 +1,6 @@
+D:\Documents\GitHub\RGNet\RGNet\bin\Debug\RGNet.dll
+D:\Documents\GitHub\RGNet\RGNet\bin\Debug\RGNet.pdb
+D:\Documents\GitHub\RGNet\RGNet\obj\Debug\RGNet.csprojAssemblyReference.cache
+D:\Documents\GitHub\RGNet\RGNet\obj\Debug\RGNet.csproj.CoreCompileInputs.cache
+D:\Documents\GitHub\RGNet\RGNet\obj\Debug\RGNet.dll
+D:\Documents\GitHub\RGNet\RGNet\obj\Debug\RGNet.pdb

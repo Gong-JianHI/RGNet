@@ -5,7 +5,7 @@ using System.Text;
 using System.Net;
 using System.IO;
 
-namespace RGNet.NetSpider
+namespace RGNet.HTTP
 {
     public class NsNetwork
     {

@@ -41,9 +41,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="NetSpider\NetSpiderBase.cs" />
-    <Compile Include="NetSpider\NsManager.cs" />
-    <Compile Include="NetSpider\NsNetwork.cs" />
+    <Compile Include="HTTP\NetSpiderBase.cs" />
+    <Compile Include="HTTP\NsManager.cs" />
+    <Compile Include="HTTP\NsNetwork.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

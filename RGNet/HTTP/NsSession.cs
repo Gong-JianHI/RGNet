@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Sockets;
 using System.Text;
 
 namespace RGNet.HTTP
 {
-    public class  NsManager
+    public class  NsSession
     {
-        public NsManager()
+        public NsSession()
         {
 
         }
@@ -18,8 +19,9 @@ namespace RGNet.HTTP
         private string method;
         private int timeout;
         private bool keepalive;
-        public Stream streamh;
+        public Stream ResponseStream;
         CookieContainer cookie;
+        private HttpWebResponse response;
 
         public bool Keepalive
         {
@@ -81,21 +83,18 @@ namespace RGNet.HTTP
         }
 
         public CookieContainer Cookie { get => cookie; set => cookie = value; }
+        
+        public HttpWebResponse Response { get => response; set => response = value; }
 
-        public string getString()
+        public string getStreamString()
         {
             string temp;
-            StreamReader s = new StreamReader(streamh);
-            temp = s.ReadToEnd();
+            using (StreamReader sr = new StreamReader(ResponseStream))
+            {
+                temp = sr.ReadToEnd();
+            }
             return temp;
         }
     }
-    class NsmHelp
-    {
-        public NsmHelp()
-        {
-
-        }
-
-    }
+    
 }

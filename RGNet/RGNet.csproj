@@ -44,6 +44,7 @@
     <Compile Include="HTTP\NetSpiderBase.cs" />
     <Compile Include="HTTP\NsSession.cs" />
     <Compile Include="HTTP\NsNetwork.cs" />
+    <Compile Include="HTTP\NsHttpGet.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

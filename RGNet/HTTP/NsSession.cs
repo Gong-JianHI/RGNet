@@ -5,6 +5,8 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Net.Http;
+using System.Net.Http.Headers;
 
 namespace RGNet.HTTP
 {
@@ -16,25 +18,18 @@ namespace RGNet.HTTP
         }
         private string userAgent;
         private string accept;
-        private string method;
-        private int timeout;
-        private bool keepalive;
-        public Stream ResponseStream;
-        CookieContainer cookie;
-        private HttpWebResponse response;
+        
 
-        public bool Keepalive
+        public HttpRequestHeaders header ;
+        
+        public void Set(string key,List<string> value)
         {
-            get
+            if (header.Contains(key))
             {
-                return keepalive;
+                header.Remove(key);
             }
-            set
-            {
-                keepalive = value;
-            }
+            header.Add(key, value);
         }
-
         public string UserAgent
         {
             get
@@ -58,43 +53,8 @@ namespace RGNet.HTTP
             }
         }
 
-        public string Method
-        {
-            get
-            {
-                return method;
-            }
-            set
-            {
-                method = value;
-            }
-        }
-
-        public int Timeout
-        {
-            get
-            {
-                return timeout;
-            }
-            set
-            {
-                timeout = value;
-            }
-        }
-
-        public CookieContainer Cookie { get => cookie; set => cookie = value; }
         
-        public HttpWebResponse Response { get => response; set => response = value; }
 
-        public string getStreamString()
-        {
-            string temp;
-            using (StreamReader sr = new StreamReader(ResponseStream))
-            {
-                temp = sr.ReadToEnd();
-            }
-            return temp;
-        }
     }
     
 }

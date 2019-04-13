@@ -23,9 +23,16 @@ namespace RGNet.HTTP
         public byte[] GetHTTPToBytes(string url)
         {
             NsHttpGet get = new NsHttpGet(httpClient);
-            byte[] re= get.GetAsync(url).Result;
+            byte[] re= get.GetAsyncToBytes(url).Result;
             return re;
         }
+        public string GetHTTPToString(string url)
+        {
+            NsHttpGet get = new NsHttpGet(httpClient);
+            string result = get.GetAsyncToString(url).Result;
+            return result;
+        }
+        
         #endregion
     }
     

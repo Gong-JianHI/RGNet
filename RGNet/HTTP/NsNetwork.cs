@@ -4,37 +4,120 @@ using System.Linq;
 using System.Text;
 using System.Net;
 using System.IO;
-using System.Net.Http;
 
 namespace RGNet.HTTP
 {
     public class NsNetwork
     {
-        HttpClient httpClient=new HttpClient();
+        private  NetSpiderBase nsb = new NetSpiderBase();
+
         public NsNetwork()
         {
+
+        }
+
+        public  void SpawnRequest(NsSession nsm, string url)
+        {
+            HttpWebResponse hwp = nsb.getRequestResponse(url, nsm.Keepalive, nsm.Timeout, nsm.Method, nsm.Accept, nsm.UserAgent);
+            nsm.Response = hwp;
+            nsm.ResponseStream = hwp.GetResponseStream();
+            return;
+        }
+        public void SpawnRequest(NsSession nsm, string url,string message)
+        {
+            HttpWebRequest req = (HttpWebRequest)WebRequest.Create(url);
+            req.KeepAlive = nsm.Keepalive;
+            req.Timeout = nsm.Timeout;
+            req.Method = nsm.Method;
+            req.Accept = nsm.Accept;
+            req.UserAgent = nsm.UserAgent;
+            using (StreamWriter sw = new StreamWriter(req.GetRequestStream()))
+            {
+                sw.Write(message);
+                sw.Flush();
+            }
+            HttpWebResponse res = (HttpWebResponse)req.GetResponse();
+            if (res.StatusCode != HttpStatusCode.OK)
+            {
+                throw new Exception("获取失败");
+            }
+            nsm.Response = res;
+            nsm.ResponseStream = res.GetResponseStream();
+            return;
+        }
+        public HttpWebResponse GetResponse(NsSession nsm, string url)
+        {
+            HttpWebResponse hwp = nsb.getRequestResponse(url, nsm.Keepalive, nsm.Timeout, nsm.Method, nsm.Accept, nsm.UserAgent);
+            return  hwp;
+        }
+        public void SpawnRequestWithCookie(NsSession nsm,string url)
+        {
+            HttpWebRequest req =(HttpWebRequest)WebRequest.Create(url);
+            req.KeepAlive = nsm.Keepalive;
+            req.Timeout = nsm.Timeout;
+            req.Method = nsm.Method;
+            req.Accept = nsm.Accept;
+            req.UserAgent = nsm.UserAgent;
+            req.CookieContainer = nsm.Cookie;
+            HttpWebResponse res = (HttpWebResponse)req.GetResponse();
+            if (res.StatusCode != HttpStatusCode.OK)
+            {
+                throw new Exception("获取失败");
+            }
+            nsm.Response = res;
+            nsm.ResponseStream = res.GetResponseStream();
             
+            return;
         }
-        ~NsNetwork()
+        public void SpawnRequestWithCookie(NsSession nsm, string url,string message)
         {
-            httpClient.Dispose();
+            HttpWebRequest req = (HttpWebRequest)WebRequest.Create(url);
+            req.KeepAlive = nsm.Keepalive;
+            req.Timeout = nsm.Timeout;
+            req.Method = nsm.Method;
+            req.Accept = nsm.Accept;
+            req.UserAgent = nsm.UserAgent;
+            req.CookieContainer = nsm.Cookie;
+            using(StreamWriter sw=new StreamWriter(req.GetRequestStream()))
+            {
+                sw.Write(message);
+                sw.Flush();
+            }
+            HttpWebResponse res = (HttpWebResponse)req.GetResponse();
+            if (res.StatusCode != HttpStatusCode.OK)
+            {
+                throw new Exception("获取失败");
+            }
+            nsm.Response = res;
+            nsm.ResponseStream = res.GetResponseStream();
+            return;
         }
-        #region GET方法
-        public byte[] GetHTTPToBytes(string url)
-        {
-            NsHttpGet get = new NsHttpGet(httpClient);
-            byte[] re= get.GetAsyncToBytes(url).Result;
-            return re;
-        }
-        public string GetHTTPToString(string url)
-        {
-            NsHttpGet get = new NsHttpGet(httpClient);
-            string result = get.GetAsyncToString(url).Result;
-            return result;
-        }
-        
-        #endregion
     }
-    
+    /*
+    class NsPost
+    {
+        public NsPost()
+        {
+        }
+        private void PostWebRequest(NsManager nsm, string postUrl, string paramData, Encoding dataEncode)
+        {
+            string ret = string.Empty;
+            byte[] byteArray = dataEncode.GetBytes(paramData); //转化
+            HttpWebRequest webReq = (HttpWebRequest)WebRequest.Create(new Uri(postUrl));
+            webReq.Method = "POST";
+            webReq.ContentType = "application/x-www-form-urlencoded";
+            webReq.KeepAlive = nsm.Keepalive;
+            webReq.Timeout = nsm.Timeout;
+            webReq.Accept = nsm.Accept;
+            webReq.UserAgent = nsm.UserAgent;
+            webReq.ContentLength = byteArray.Length;
+            Stream newStream = webReq.GetRequestStream();
+            newStream.Write(byteArray, 0, byteArray.Length);//写入参数
+            newStream.Close();
+            HttpWebResponse response = (HttpWebResponse)webReq.GetResponse();
+            nsm.streamh = response.GetResponseStream();
+            return;
+        }
+    }
+    */
 }
-  

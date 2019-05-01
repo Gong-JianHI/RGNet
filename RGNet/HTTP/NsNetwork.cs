@@ -16,19 +16,18 @@ namespace RGNet.HTTP
 
         }
 
-        public  void SpawnRequest(NsSession nsm, string url)
+        public  void JustGet(NsSession nsm, string url)
         {
-            HttpWebResponse hwp = nsb.getRequestResponse(url, nsm.Keepalive, nsm.Timeout, nsm.Method, nsm.Accept, nsm.UserAgent);
-            nsm.Response = hwp;
-            nsm.ResponseStream = hwp.GetResponseStream();
+            HttpWebResponse hwp = nsb.getRequestResponse(url, nsm.Keepalive, nsm.Timeout, "GET", nsm.Accept, nsm.UserAgent);
+            nsm.result = new NsHTTPResult(hwp);
             return;
         }
-        public void SpawnRequest(NsSession nsm, string url,string message)
+        public void SimpleGet(NsSession nsm, string url,string message)
         {
             HttpWebRequest req = (HttpWebRequest)WebRequest.Create(url);
             req.KeepAlive = nsm.Keepalive;
             req.Timeout = nsm.Timeout;
-            req.Method = nsm.Method;
+            req.Method = "GET";
             req.Accept = nsm.Accept;
             req.UserAgent = nsm.UserAgent;
             using (StreamWriter sw = new StreamWriter(req.GetRequestStream()))
@@ -41,21 +40,16 @@ namespace RGNet.HTTP
             {
                 throw new Exception("获取失败");
             }
-            nsm.Response = res;
-            nsm.ResponseStream = res.GetResponseStream();
+            nsm.result = new NsHTTPResult(res);
             return;
         }
-        public HttpWebResponse GetResponse(NsSession nsm, string url)
-        {
-            HttpWebResponse hwp = nsb.getRequestResponse(url, nsm.Keepalive, nsm.Timeout, nsm.Method, nsm.Accept, nsm.UserAgent);
-            return  hwp;
-        }
-        public void SpawnRequestWithCookie(NsSession nsm,string url)
+        
+        public void Get(NsSession nsm,string url)
         {
             HttpWebRequest req =(HttpWebRequest)WebRequest.Create(url);
             req.KeepAlive = nsm.Keepalive;
             req.Timeout = nsm.Timeout;
-            req.Method = nsm.Method;
+            req.Method = "GET";
             req.Accept = nsm.Accept;
             req.UserAgent = nsm.UserAgent;
             req.CookieContainer = nsm.Cookie;
@@ -64,17 +58,17 @@ namespace RGNet.HTTP
             {
                 throw new Exception("获取失败");
             }
-            nsm.Response = res;
-            nsm.ResponseStream = res.GetResponseStream();
-            
+            nsm.result = new NsHTTPResult(res);
+            nsm.Cookie=new CookieContainer();
+            nsm.Cookie.Add(res.Cookies);
             return;
         }
-        public void SpawnRequestWithCookie(NsSession nsm, string url,string message)
+        public void GetWithMessage(NsSession nsm, string url,string message)
         {
             HttpWebRequest req = (HttpWebRequest)WebRequest.Create(url);
             req.KeepAlive = nsm.Keepalive;
             req.Timeout = nsm.Timeout;
-            req.Method = nsm.Method;
+            req.Method = "GET";
             req.Accept = nsm.Accept;
             req.UserAgent = nsm.UserAgent;
             req.CookieContainer = nsm.Cookie;
@@ -88,8 +82,10 @@ namespace RGNet.HTTP
             {
                 throw new Exception("获取失败");
             }
-            nsm.Response = res;
-            nsm.ResponseStream = res.GetResponseStream();
+            nsm.result = new NsHTTPResult(res);
+
+            nsm.Cookie = new CookieContainer();
+            nsm.Cookie.Add(res.Cookies);
             return;
         }
     }

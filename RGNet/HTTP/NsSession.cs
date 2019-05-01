@@ -17,11 +17,10 @@ namespace RGNet.HTTP
         private string userAgent;
         private string accept;
         private string method;
+        public NsHTTPResult result;
         private int timeout;
         private bool keepalive;
-        public Stream ResponseStream;
         CookieContainer cookie;
-        private HttpWebResponse response;
 
         public bool Keepalive
         {
@@ -83,18 +82,9 @@ namespace RGNet.HTTP
         }
 
         public CookieContainer Cookie { get => cookie; set => cookie = value; }
-        
-        public HttpWebResponse Response { get => response; set => response = value; }
 
-        public string getStreamString()
-        {
-            string temp;
-            using (StreamReader sr = new StreamReader(ResponseStream))
-            {
-                temp = sr.ReadToEnd();
-            }
-            return temp;
-        }
+
+        
     }
     
 }

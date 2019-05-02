@@ -13,11 +13,15 @@ namespace RGNet.HTTP
         private HttpWebResponse response=null;
         public Stream responseStream=null;
         private string Text;
+
+        public string ResponseText { get => Text; set => Text = value; }
+
         public NsHTTPResult(HttpWebResponse res)
         {
             response = res;
             responseStream = res.GetResponseStream();
         }
+ 
         public void GetAllText()
         {
             if (responseStream == null)

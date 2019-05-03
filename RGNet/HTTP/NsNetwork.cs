@@ -88,6 +88,50 @@ namespace RGNet.HTTP
             nsm.Cookie.Add(res.Cookies);
             return;
         }
+        public void Post(NsSession nsm, string url)
+        {
+            HttpWebRequest req = (HttpWebRequest)WebRequest.Create(url);
+            req.KeepAlive = nsm.Keepalive;
+            req.Timeout = nsm.Timeout;
+            req.Method = "POST";
+            req.Accept = nsm.Accept;
+            req.UserAgent = nsm.UserAgent;
+            req.CookieContainer = nsm.Cookie;
+            HttpWebResponse res = (HttpWebResponse)req.GetResponse();
+            if (res.StatusCode != HttpStatusCode.OK)
+            {
+                throw new Exception("获取失败");
+            }
+            nsm.result = new NsHTTPResult(res);
+            nsm.Cookie = new CookieContainer();
+            nsm.Cookie.Add(res.Cookies);
+            return;
+        }
+        public void PostWithMessage(NsSession nsm, string url, string message)
+        {
+            HttpWebRequest req = (HttpWebRequest)WebRequest.Create(url);
+            req.KeepAlive = nsm.Keepalive;
+            req.Timeout = nsm.Timeout;
+            req.Method = "POST";
+            req.Accept = nsm.Accept;
+            req.UserAgent = nsm.UserAgent;
+            req.CookieContainer = nsm.Cookie;
+            using (StreamWriter sw = new StreamWriter(req.GetRequestStream()))
+            {
+                sw.Write(message);
+                sw.Flush();
+            }
+            HttpWebResponse res = (HttpWebResponse)req.GetResponse();
+            if (res.StatusCode != HttpStatusCode.OK)
+            {
+                throw new Exception("获取失败");
+            }
+            nsm.result = new NsHTTPResult(res);
+
+            nsm.Cookie = new CookieContainer();
+            nsm.Cookie.Add(res.Cookies);
+            return;
+        }
     }
     /*
     class NsPost
